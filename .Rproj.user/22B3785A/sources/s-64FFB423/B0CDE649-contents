@@ -1,0 +1,76 @@
+---
+title: "COVID Education Access"
+date: "`r Sys.Date()`"
+output: 
+  github_document:
+    toc: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+```
+
+```{r}
+# Libraries
+library(tidyverse)
+library(sf)
+library(DT)
+library(scales)
+
+# Parameters
+df_internet <- read_sf(here::here("data/internet", "H08_INTERNET.shp"))
+df_school <- read_sf(here::here("data/school", "P10_STUDENT.shp"))
+```
+
+# Honduras
+
+## Internet access
+
+```{r}
+df_internet %>% datatable()
+```
+
+
+```{r}
+df_internet %>%
+  mutate(
+    internet_access = H69 / H14,
+    internet_access = pmin(internet_access, 0.10)
+    ) %>%
+  ggplot(aes(fill = internet_access)) +
+  geom_sf(size = 0.3) +
+  scale_fill_gradientn(
+    colors = RColorBrewer::brewer.pal(n = 9, name = "PuRd"),
+    labels = percent
+  ) +
+  theme_void() +
+  labs(
+    fill = "Proportion of\nhouseholds with\ninternet access"
+  )
+```
+
+## School access
+
+```{r}
+df_school %>% datatable()
+```
+
+
+```{r}
+df_school %>%
+  mutate(
+    school_access = H69 / H14
+    ) %>%
+  ggplot(aes(fill = school_access)) +
+  geom_sf(size = 0.3) +
+  scale_fill_gradientn(
+    colors = RColorBrewer::brewer.pal(n = 9, name = "PuRd"),
+    labels = percent
+  ) +
+  theme_void() +
+  labs(
+    fill = "Proportion of\nhouseholds with\nschool access"
+  )
+```
+

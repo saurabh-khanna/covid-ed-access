@@ -1,0 +1,12 @@
+data/
+.shp
+.dta
+.csv
+.pdf
+.doc
+.docx
+*.xlsx
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
